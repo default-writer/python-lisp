@@ -29,7 +29,7 @@ CAR = lambda x: x[0] if x else []
 CDR = lambda x: x[1:]
 LEN = lambda x: 1 + LEN(CDR(x)) if x else 0
 ACC = lambda x, f: f(LST(CAR(x), ACC(CDR(x), f))) if CDR(x) else CAR(x)
-SUM = lambda x: ACC(x, sum)
+SUM = lambda x: sum(x)
 FLT = lambda *x: LST(*FLT(CAR(x)), *FLT(*CDR(x))) if CDR(x) else CAR(x)
 
 LST = debugger("LST", debug=False)(LST)
