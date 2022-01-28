@@ -40,19 +40,18 @@ def PRN(*x):
 
 
 # LISt Programming FUNCTIONS
-CAR = lambda x: x[0] if x else ()
-CDR = lambda x: x[1:]
+CAR = lambda *x: x[0] if x else ()
+CDR = lambda *x: x[1:]
 LST = lambda *x: tuple(x)
 LEN = lambda *x: len(*x)
 SUM = lambda *x: sum(*x)
-CON = lambda *x: LST(*CON(CAR(x)), *CON(*CDR(x))) if CDR(x) else CAR(x)
+CON = lambda *x: LST(*CON(CAR(*x)), *CON(*CDR(*x))) if CDR(*x) else CAR(*x)
 DUP = lambda *x: LST(*x)
 CAL = lambda f, *x: f(*x)
-EVL = lambda f, *x: LST(*EVL(f, CAR(x)), *EVL(f, *CDR(x))) if CDR(x) else f(x)
+EVL = lambda f, *x: LST(*EVL(f, CAR(*x)), *EVL(f, *CDR(*x))) if CDR(*x) else f(x)
 
 
 # DEBUGGER SETTINGS
-PRN = debugger("PRN", debug=True)(PRN)
 CAR = debugger("CAR", debug=True)(CAR)
 CDR = debugger("CDR", debug=True)(CDR)
 LST = debugger("LST", debug=True)(LST)
@@ -74,9 +73,9 @@ d = (9,)
 # TEST FUNCTION CALLS
 PRN(CON((1,), a))  # 1
 PRN(a)  # 2
-PRN(CAR(a))  # 3
-PRN(CAR(()))  # 4
-PRN(CDR(a))  # 5
+PRN(f"{CAR(a)}-{CDR(a)}")  # 3
+PRN(CDR(a,4))  # 4
+PRN(CAR(*a))  # 5
 PRN(LEN(a))  # 6
 PRN(SUM(a))  # 7
 PRN(LST(1, 2, 3))  # 8
@@ -90,8 +89,9 @@ PRN(1, 2, 3)  # 15
 CAL(PRN, 11, 12, 13)  # 16
 PRN(CAL(CON, (1,), (2,), (3, 4)))  # 17
 PRN(CON((1, 2, 3), (2,), (1,), (3, 4)))  # 18
-PRN(CON(((1,),), (2,), (3, 4)))  # 19
-PRN(DUP(a))  # 20
-PRN(EVL(DUP, 1, 2, 3, 2, 1, 3, 4))  # 21
-PRN(CON(1))  # 22
-PRN(CAR((((1,),),)))
+PRN(EVL(CON, (1, 2, 3), (2,), (1,), (3, 4)))  # 19
+PRN(CON(((1,),), (2,), (3, 4)))  # 20
+PRN(DUP(a))  # 21
+PRN(EVL(DUP, *CON((1, 2, 3), (2,), (1,), (3, 4))))  # 22
+PRN(CON(1))  # 23
+PRN(CAR((((1,),),)))  # 24
