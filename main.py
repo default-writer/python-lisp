@@ -1,17 +1,24 @@
 counter = 0
 functions = {}
+verbose_level = 1 # 0 - no debugging, 1 - short, 2 - stack trace
 
 
 def debugger(name, debug=False):
     _STR = lambda *x: ", ".join([functions[arg] if arg in functions else str(arg) for arg in x])
+    def _PRN(x):
+        global counter
+        counter += 1
+        print(f"{counter}:", x)
 
     def wrapper(f):
         def func(*args, **kwargs):
             global counter
             local = counter + 1
-            PRN(f"{name} ({_STR(*args)})") if debug else ()
+            function_counter = [i for i, k_v in enumerate(functions.values()) if k_v == name]
+            prefix = f"{function_counter} " if verbose_level == 2 else ''
+            _PRN(f"{prefix}{name} ({_STR(*args)})") if verbose_level > 0 and debug else ()
             res = f(*args, **kwargs)
-            PRN(f"{local}: {res}") if debug else ()
+            _PRN(f"{local}: {res}") if verbose_level == 2 and debug else ()
             return res
         functions[func] = name
         return func
@@ -28,7 +35,7 @@ def PRN(x):
 CAR = lambda x: x[0] if x else []
 CDR = lambda x: x[1:]
 
-LST = lambda *x: tuple(x)
+LST= lambda *x: tuple(x)
 LEN = lambda *x: len(x)
 SUM = lambda *x: sum(*x)
 FLT = lambda *x: LST(*FLT(CAR(x)), *FLT(*CDR(x))) if CDR(x) else CAR(x)
@@ -45,7 +52,7 @@ SUM = debugger("SUM", debug=True)(SUM)
 FLT = debugger("FLT", debug=True)(FLT)
 STR = debugger("STR", debug=True)(STR)
 CAL = debugger("CAL", debug=True)(CAL)
-# ACC = debugger("ACC", debug=False)(ACC)
+# ACC = debugger("ACC", debug=True)(ACC)
 
 a = (1, 2, 3)
 b = LST(4, 5, 6)
