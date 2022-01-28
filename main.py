@@ -1,10 +1,12 @@
 counter = 0
 functions = {}
-verbose_level = 0 # 0 - no debugging, 1 - short, 2 - stack trace
+verbose_level = 0  # 0 - no debugging, 1 - short, 2 - stack trace
 
 
 def debugger(name, debug=False):
-    _STR = lambda *x: ", ".join([functions[arg] if arg in functions else f"'{arg}'" if type(arg) is str else str(arg) for arg in x])
+    _STR = lambda *x: ", ".join(
+        [functions[arg] if arg in functions else f"'{arg}'" if type(arg) is str else str(arg) for arg in x])
+
     def _PRN(x):
         global counter
         counter += 1
@@ -14,12 +16,12 @@ def debugger(name, debug=False):
         def func(*args, **kwargs):
             global counter
             local = counter + 1
-            function_counter = [i for i, k_v in enumerate(functions.values()) if k_v == name]
-            prefix = f"{function_counter} " if verbose_level == 2 else ''
+            prefix = f"{[i for i, k_v in enumerate(functions.values()) if k_v == name]} " if verbose_level == 2 else ''
             _PRN(f"{prefix}{name} ({_STR(*args)})") if verbose_level > 0 and debug else ()
             res = f(*args, **kwargs)
             _PRN(f"{local}: {res}") if verbose_level == 2 and debug else ()
             return res
+
         functions[func] = name
         return func
 
@@ -30,14 +32,16 @@ def PRN(*x):
     global counter
     counter += 1
     print(f"{counter}:", *x)
-    return x
+
+
 CAR = lambda x: x[0] if x else ()
 CDR = lambda x: x[1:]
 LST = lambda *x: tuple(x)
-LEN = lambda *x: len(x)
+LEN = lambda *x: len(*x)
 SUM = lambda *x: sum(*x)
 FLT = lambda *x: LST(*FLT(CAR(x)), *FLT(*CDR(x))) if CDR(x) else CAR(x)
-STR = lambda *x: ", ".join([functions[arg] if arg in functions else f"'{arg}'" if type(arg) is str else str(arg) for arg in x])
+STR = lambda *x: ", ".join(
+    [functions[arg] if arg in functions else f"'{arg}'" if type(arg) is str else str(arg) for arg in x])
 CAL = lambda f, *x: f(x)
 # ACC = lambda x, f: f(LST(CAR(x), ACC(CDR(x), f))) if CDR(x) else CAR(x)
 
@@ -67,6 +71,6 @@ PRN(LST(1, 2, 3))
 PRN(CAR(b))
 PRN(CAR(LST(CAR(b))))
 PRN(FLT(a, b, c, d))
-PRN(CAL(PRN, "Hello, world!"))
+CAL(PRN, "Hello, world!")
 PRN(LST("Hello, world!"))
 PRN("Hello, world!")
