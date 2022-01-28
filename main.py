@@ -44,7 +44,7 @@ SUM = lambda *x: sum(*x)
 FLT = lambda *x: LST(*FLT(CAR(x)), *FLT(*CDR(x))) if CDR(x) else CAR(x)
 STR = lambda *x: ", ".join(
     [functions[arg] if arg in functions else f"'{arg}'" if type(arg) is str else str(arg) for arg in x])
-CAL = lambda f, *x: f(x)
+CAL = lambda f, *x: f(*x)
 # ACC = lambda x, f: f(LST(CAR(x), ACC(CDR(x), f))) if CDR(x) else CAR(x)
 
 PRN = debugger("PRN", debug=True)(PRN)
