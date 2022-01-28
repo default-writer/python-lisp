@@ -2,17 +2,17 @@ counter = 0
 functions = {}
 
 def debugger(name, debug=False):
+    _STR = lambda *x: ", ".join([functions[arg] if arg in functions else str(arg) for arg in x])
+
     def wrapper(f):
         def func(*args, **kwargs):
             global counter
             local = counter + 1
-            if debug:
-                PRN(f"{name} {args}")
+            PRN(f"{name} ({_STR(*args)})") if debug else ()
             res = f(*args, **kwargs)
-            if debug:
-                PRN(f"{local}: {res}")
+            PRN(f"{local}: {res}") if debug else ()
             return res
-            functions[func] = name
+        functions[func] = name
         return func
 
     return wrapper
@@ -60,3 +60,4 @@ PRN(LST(1, 2, 3))
 PRN(CAR(b))
 PRN(CAR(LST(CAR(b))))
 PRN(FLT(a, b, c, d))
+PRN(CAL(STR, a, b, c, d))
