@@ -1,6 +1,7 @@
 counter = 0
 functions = {}
 
+
 def debugger(name, debug=False):
     _STR = lambda *x: ", ".join([functions[arg] if arg in functions else str(arg) for arg in x])
 
