@@ -1,10 +1,10 @@
 counter = 0
 functions = {}
-verbose_level = 1 # 0 - no debugging, 1 - short, 2 - stack trace
+verbose_level = 2 # 0 - no debugging, 1 - short, 2 - stack trace
 
 
 def debugger(name, debug=False):
-    _STR = lambda *x: ", ".join([functions[arg] if arg in functions else str(arg) for arg in x])
+    _STR = lambda *x: ", ".join([functions[arg] if arg in functions else f"'{arg}'" if type(arg) is str else str(arg) for arg in x])
     def _PRN(x):
         global counter
         counter += 1
@@ -26,22 +26,22 @@ def debugger(name, debug=False):
     return wrapper
 
 
-def PRN(x):
+def PRN(*x):
     global counter
     counter += 1
-    print(f"{counter}:", x)
-
-
+    print(f"{counter}:", *x)
+    return x
 CAR = lambda x: x[0] if x else ()
 CDR = lambda x: x[1:]
 LST = lambda *x: tuple(x)
 LEN = lambda *x: len(x)
 SUM = lambda *x: sum(*x)
 FLT = lambda *x: LST(*FLT(CAR(x)), *FLT(*CDR(x))) if CDR(x) else CAR(x)
-STR = lambda *x: ", ".join([functions[arg] if arg in functions else str(arg) for arg in x])
+STR = lambda *x: ", ".join([functions[arg] if arg in functions else f"'{arg}'" if type(arg) is str else str(arg) for arg in x])
 CAL = lambda f, *x: f(x)
 # ACC = lambda x, f: f(LST(CAR(x), ACC(CDR(x), f))) if CDR(x) else CAR(x)
 
+PRN = debugger("PRN", debug=True)(PRN)
 CAR = debugger("CAR", debug=True)(CAR)
 CDR = debugger("CDR", debug=True)(CDR)
 LST = debugger("LST", debug=True)(LST)
@@ -67,4 +67,6 @@ PRN(LST(1, 2, 3))
 PRN(CAR(b))
 PRN(CAR(LST(CAR(b))))
 PRN(FLT(a, b, c, d))
-PRN(CAL(STR, a, b, c, d))
+PRN(CAL(PRN, "Hello", "Привет"))
+PRN("Hello", "Привет")
+PRN(LST("Hello", "Привет"))
