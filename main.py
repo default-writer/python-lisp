@@ -1,6 +1,6 @@
 counter = 0
 functions = {}
-verbose_level = 1 # 0 - no debugging, 1 - short, 2 - stack trace
+verbose_level = 0 # 0 - no debugging, 1 - short, 2 - stack trace
 
 
 def debugger(name, debug=False):
@@ -68,5 +68,5 @@ PRN(CAR(b))
 PRN(CAR(LST(CAR(b))))
 PRN(FLT(a, b, c, d))
 PRN(CAL(PRN, "Hello, world!"))
-PRN("Hello, world!")
 PRN(LST("Hello, world!"))
+PRN("Hello, world!")
