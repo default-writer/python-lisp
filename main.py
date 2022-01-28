@@ -1,5 +1,5 @@
 counter = 0
-
+functions = {}
 
 def debugger(name, debug=False):
     def wrapper(f):
@@ -12,7 +12,7 @@ def debugger(name, debug=False):
             if debug:
                 PRN(f"{local}: {res}")
             return res
-
+            functions[func] = name
         return func
 
     return wrapper
