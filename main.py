@@ -1,6 +1,6 @@
 counter = 0
 functions = {}
-verbose_level = 0  # 0 - no debugging, 1 - short, 2 - stack trace
+verbose_level = 2  # 0 - no debugging, 1 - short, 2 - stack trace
 
 
 def debugger(name, debug=False):
@@ -19,6 +19,7 @@ def debugger(name, debug=False):
             prefix = f"{[i for i, k_v in enumerate(functions.values()) if k_v == name]} " if verbose_level == 2 else ''
             _PRN(f"{prefix}{name} ({_STR(*args)})") if verbose_level > 0 and debug else ()
             res = f(*args, **kwargs)
+            res = res if res else ""
             _PRN(f"{local}: {res}") if verbose_level == 2 and debug else ()
             return res
 
@@ -32,6 +33,7 @@ def PRN(*x):
     global counter
     counter += 1
     print(f"{counter}:", *x)
+    return x
 
 
 CAR = lambda x: x[0] if x else ()
