@@ -32,10 +32,9 @@ def PRN(x):
     print(f"{counter}:", x)
 
 
-CAR = lambda x: x[0] if x else []
+CAR = lambda x: x[0] if x else ()
 CDR = lambda x: x[1:]
-
-LST= lambda *x: tuple(x)
+LST = lambda *x: tuple(x)
 LEN = lambda *x: len(x)
 SUM = lambda *x: sum(*x)
 FLT = lambda *x: LST(*FLT(CAR(x)), *FLT(*CDR(x))) if CDR(x) else CAR(x)
@@ -45,7 +44,6 @@ CAL = lambda f, *x: f(x)
 
 CAR = debugger("CAR", debug=True)(CAR)
 CDR = debugger("CDR", debug=True)(CDR)
-
 LST = debugger("LST", debug=True)(LST)
 LEN = debugger("LEN", debug=True)(LEN)
 SUM = debugger("SUM", debug=True)(SUM)
@@ -61,6 +59,7 @@ d = (9,)
 
 PRN(a)
 PRN(CAR(a))
+PRN(CAR(()))
 PRN(CDR(a))
 PRN(LEN(a))
 PRN(SUM(a))
